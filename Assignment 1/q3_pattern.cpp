@@ -27,13 +27,15 @@ void pattern (int n){
     }
     cout << endl;
   }
-
 }
 
 
 int main(void){
 
-  int n = 5;
+  cout << "\n>> Enter a number: ";
+  int n; cin >> n;
+  
+  cout << "\n";
   pattern(n);
   
   return 0;
