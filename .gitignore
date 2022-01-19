@@ -1,0 +1,7 @@
+temp
+*.exe
+.vscode
+*.docx
+*.pdf
+*.tmp
+tempCodeRunnerFile.*
