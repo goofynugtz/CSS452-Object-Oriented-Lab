@@ -119,19 +119,28 @@ int main (void){
     case 1:
       cout << "Enter #start #end #step (Recommended: 0 360 10) >> ";
       cin >> start >> end >> STEP;
-      displayCosineWave(start, end, c, STEP);
+      if (STEP > 0)
+        displayCosineWave(start, end, c, STEP);
+      else
+        cout << "\nError >> Invalid #step value. Value must be greater than 0.\n";
       break;
     
     case 2:
       cout << "Enter #start #end #step (Recommended: 0 360 10) >> ";
       cin >> start >> end >> STEP;
-      displaySineWave(start, end, c, STEP);
+      if (STEP > 0)
+        displaySineWave(start, end, c, STEP);
+      else
+        cout << "\nError >> Invalid #step value. Value must be greater than 0.\n";
       break;
 
     case 3:
       cout << "Enter #start #end #step (Recommended: 0 4 0.25) >> ";
       cin >> start >> end >> STEP;
-      displayExponentialCurve(start, end, char(176), STEP);
+      if (STEP > 0)
+        displayExponentialCurve(start, end, char(176), STEP);
+      else
+        cout << "\nError >> Invalid #step value. Value must be greater than 0.\n";
       break;
 
     default:
