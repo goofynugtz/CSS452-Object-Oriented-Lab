@@ -10,14 +10,15 @@ int main (void){
   cout << "\nEnter #rows #columns of first matrix: ";
   cin >> rows >> columns;
   Matrix A(rows, columns);
-  A.fillValues();
+  cin >> A;
+  
   cout << "\nEnter #rows #columns of second matrix: ";
   cin >> rows >> columns;
   Matrix B(rows, columns);
-  B.fillValues();
+  cin >> B;
 
   Matrix result = A*B;
-  result.previewMatrix();
+  cout << result;
   
   return 0;
 }

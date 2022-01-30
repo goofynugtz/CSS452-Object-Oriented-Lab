@@ -1,8 +1,8 @@
 #include <iostream>
 #include <math.h>
 #include <iomanip>
+#include <time.h>
 using namespace std;
-
 
 class heap {
   private:
@@ -12,14 +12,20 @@ class heap {
     int current;
 
     void heapify(int i){
-      int parent = (i - 1) / 2;
-      if (data[parent] > 0) {
-        if (data[i] > data[parent]) {
-          swap(data[i], data[parent]);
-          heapify(parent);
-        }
+      int size = current;
+      int largest = i;
+      int l = 2 * i + 1;
+      int r = 2 * i + 2;
+      if (l < size && data[l] > data[largest])
+        largest = l;
+      if (r < size && data[r] > data[largest])
+        largest = r;
+
+      if (largest != i){
+        swap(data[i], data[largest]);
+        heapify(largest);
       }
-    };
+    }
 
   public:
 
@@ -55,13 +61,18 @@ class heap {
     void insertNode(int value){
       data[current++] = value;
       cout << ">> " << value << " has been inserted.\n";
-      heapify(current-1);
+      for (int i = (current/2) - 1; i >= 0; i--){
+        heapify(i);
+      }
     };
 
     void removeNode(int index){
       system("clear");
       data[index] = data[--current];
-      heapify(index);
+
+      for (int i = (current/2) - 1; i >= 0; i--){
+        heapify(i);
+      }
     }
 
     void printArray(){
@@ -86,7 +97,7 @@ int main (void){
 
   while (!wantToExit){
     cout << "\n1. Insert";
-    cout << "\n2. Insert Multiple values";
+    cout << "\n2. Insert multiple random values";
     cout << "\n3. Delete";
     cout << "\n4. Display Heap (Tree)";
     cout << "\n5. Display Heap (Array)";
@@ -94,6 +105,8 @@ int main (void){
     cout << "\nChoose Option >> ";
     int choice; cin >> choice;
     int x; int d;
+    int rangeMin, rangeMax;
+    srand(time(NULL));
 
     switch (choice){
       case 0:
@@ -113,9 +126,11 @@ int main (void){
           cout << "Error: No. of elements exceed the heap size.";
 
         else {
-          cout << "Enter #values below:\n";
+
+          cout << "Enter #min and #max range of values: ";
+          cin >> rangeMin >> rangeMax;
           while (d--){
-            cin >> x;
+            x = (rand() % (rangeMax-rangeMin)) + rangeMin;
             h.insertNode(x);
           }
         }

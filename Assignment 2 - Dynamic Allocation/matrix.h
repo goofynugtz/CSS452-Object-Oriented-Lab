@@ -85,18 +85,18 @@ class Matrix {
         matrix[i] = new int[columns];
     };
 
-    void fillValues (){
+    friend istream & operator>> (istream &in, Matrix &m){
       cout << "Enter the values:\n";
-      for (int i = 0; i< rows; i++)
-        for (int j = 0; j < columns; j++){
-          int n; cin >> n;
-          matrix[i][j] = n;
+      for (int i = 0; i< m.rows; i++)
+        for (int j = 0; j < m.columns; j++){
+          int n; in >> n;
+          m.matrix[i][j] = n;
         }
     };
 
     int calculateDeterminant() {
+      int determinant = 0;
       if (isSquare){
-        int determinant;
         int power = 1;
         int &order = rows;
         if (order == 1)
@@ -128,19 +128,21 @@ class Matrix {
           }
         }
         return determinant;
-      } else 
-        cout << "Error: Not a square matrix.\n";
+      } else {
+        cout << "Error: Not a square matrix.\nDeterminant is not defined.\n";
+        return determinant;
+      }
     };
     
-    void previewMatrix (){
-      cout << "\n";
-      for (int i = 0; i < rows; i++){
-        cout << char(179);
-        for (int j = 0; j < columns; j++)
-          cout << setw(4) << right << matrix[i][j] << setw(2) << "";
-        cout << char(179) << "\n";
+    friend ostream & operator<< (ostream &out, Matrix &m){
+      out << "\n";
+      for (int i = 0; i < m.rows; i++){
+        out << char(179);
+        for (int j = 0; j < m.columns; j++)
+          out << setw(4) << right << m.matrix[i][j] << setw(2) << "";
+        out << char(179) << "\n";
       }
-      cout << "\n";
+      out << "\n";
     };
 
     Matrix operator* (Matrix const &arr){

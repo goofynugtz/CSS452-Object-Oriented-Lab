@@ -21,7 +21,7 @@ void cramersRule (Matrix A, int n, Matrix B){
       }
   } 
   for (int k = 0; k < n; k++){
-    D[k]->previewMatrix();
+    cout << D[k];
     int di = D[k]->calculateDeterminant();
     cout << "Determinant: " << di << "\n";
     cout << "Corresponding Variable: " << di/d;
