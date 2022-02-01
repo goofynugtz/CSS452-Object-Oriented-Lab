@@ -2,8 +2,12 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
-#define BUFFER_SIZE 1000
 using namespace std;
+
+/* 
+Roll: 20CS8016
+Name: Rahul Ranjan  
+ */
 
 void indent(){
 
@@ -31,21 +35,10 @@ void indent(){
   }
 }
 
-void singleLine(){
-
-  string readBuffer;
-  ifstream reader("indented.cpp");
-  ofstream writer("singleline.cpp");
-
-  while (getline(reader, readBuffer)){
-    writer << readBuffer;
-  }
-}
 
 int main (void){
 
   indent();
-  singleLine();
 
   return 0;
 }

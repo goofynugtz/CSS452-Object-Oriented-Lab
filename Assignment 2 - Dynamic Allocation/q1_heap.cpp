@@ -4,6 +4,7 @@
 #include <time.h>
 using namespace std;
 
+// Max Heap
 class heap {
   private:
 
@@ -37,7 +38,6 @@ class heap {
       current = 0;
     };
 
-
     friend ostream & operator<< (ostream &out, heap &h){
       system("clear");
       int n = 0; int level = 0;
@@ -61,18 +61,15 @@ class heap {
     void insertNode(int value){
       data[current++] = value;
       cout << ">> " << value << " has been inserted.\n";
-      for (int i = (current/2) - 1; i >= 0; i--){
+      for (int i = (current/2) - 1; i >= 0; i--)
         heapify(i);
-      }
     };
 
     void removeNode(int index){
       system("clear");
       data[index] = data[--current];
-
-      for (int i = (current/2) - 1; i >= 0; i--){
+      for (int i = (current/2) - 1; i >= 0; i--)
         heapify(i);
-      }
     }
 
     void printArray(){
@@ -83,6 +80,9 @@ class heap {
       cout << "\n";
     };
 
+    ~heap(){
+      delete[] data;
+    };
 };
 
 

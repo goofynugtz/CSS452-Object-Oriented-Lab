@@ -2,23 +2,22 @@
 #include "./matrix.h"
 using namespace std;
 
-
-
 int main (void){
 
-  int rows, columns;
-  cout << "\nEnter #rows #columns of first matrix: ";
-  cin >> rows >> columns;
-  Matrix A(rows, columns);
+  int order;
+  cout << "\nEnter #order of matrix: ";
+  cin >> order;
+  Matrix A(order);
+  cout << "\nA: ";
   cin >> A;
   
-  cout << "\nEnter #rows #columns of second matrix: ";
-  cin >> rows >> columns;
-  Matrix B(rows, columns);
+  Matrix B(order);
+  cout << "\nB: ";
   cin >> B;
 
   Matrix result = A*B;
   cout << result;
+  cout << "Determinant of Result: " << result.calculateDeterminant() << "\n";
   
   return 0;
 }

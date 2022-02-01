@@ -21,7 +21,7 @@ void cramersRule (Matrix A, int n, Matrix B){
       }
   } 
   for (int k = 0; k < n; k++){
-    cout << D[k];
+    cout << *D[k];
     int di = D[k]->calculateDeterminant();
     cout << "Determinant: " << di << "\n";
     cout << "Corresponding Variable: " << di/d;
@@ -32,7 +32,7 @@ void cramersRule (Matrix A, int n, Matrix B){
 
 int main (void){
 
-  cout << "Enter the no. of linear equations: ";
+  cout << "\nEnter the no. of linear equations: ";
   int n; cin >> n;
   cout << "Enter the co-eff matrix of eq(s) below\n";
   Matrix A(n), B(n,1);

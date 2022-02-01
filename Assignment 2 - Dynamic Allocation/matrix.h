@@ -2,7 +2,6 @@
 #include <iomanip>
 using namespace std;
 
-
 class Matrix {
 
   private:
@@ -79,7 +78,10 @@ class Matrix {
     Matrix (int row, int column){
       rows = row;
       columns = column;
-      isSquare = false;
+      if (rows == columns)
+        isSquare = true;
+      else
+        isSquare = false;
       matrix = new int *[rows];
       for (int i = 0; i < rows; i++)
         matrix[i] = new int[columns];
@@ -92,6 +94,7 @@ class Matrix {
           int n; in >> n;
           m.matrix[i][j] = n;
         }
+      return in;
     };
 
     int calculateDeterminant() {
@@ -143,6 +146,7 @@ class Matrix {
         out << char(179) << "\n";
       }
       out << "\n";
+      return out;
     };
 
     Matrix operator* (Matrix const &arr){
@@ -155,6 +159,10 @@ class Matrix {
               result.matrix[i][j] += matrix[i][k] * arr.matrix[k][j];
           }
         return result;
+      } else {
+        cout << "Error: Multiplication is not defined.\n";
+        cout << "c1 != r2.\n";
+        return 0;
       }
     };
     
@@ -164,4 +172,8 @@ class Matrix {
       isSquare = arr.isSquare;
       matrix = arr.matrix;
     };
+
+    ~Matrix(){
+      delete[] matrix;
+    }
 };
