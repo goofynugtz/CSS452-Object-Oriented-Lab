@@ -166,14 +166,35 @@ class Matrix {
       }
     };
     
-    void operator= (Matrix const &arr){
-      columns = arr.columns;
-      rows = arr.rows;
-      isSquare = arr.isSquare;
-      matrix = arr.matrix;
-    };
+    const Matrix& operator= (const Matrix&);
+
+    Matrix(const Matrix& N){
+      rows = N.rows;
+      columns = N.columns;
+      matrix = new int *[rows];
+      for (int i = 0; i < rows; i++)
+        matrix[i] = new int[columns];
+      for (int i = 0; i < rows; i++)
+        for (int j = 0; j < columns; j++)    
+          matrix[i][j] = N.matrix[i][j];
+    }
 
     ~Matrix(){
+      for (int i = 0; i < rows; i++)
+        delete[] matrix[i];
       delete[] matrix;
     }
+};
+
+const Matrix& Matrix::operator= (Matrix const &arr){
+  columns = arr.columns;
+  rows = arr.rows;
+  isSquare = arr.isSquare;
+  matrix = new int *[rows];
+  for (int i = 0; i < rows; i++)
+    matrix[i] = new int[columns];
+  for (int i = 0; i < rows; i++)
+    for (int j = 0; j < columns; j++)
+      matrix[i][j] = arr.matrix[i][j];
+  return (*this);
 };

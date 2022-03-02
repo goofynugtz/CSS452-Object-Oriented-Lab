@@ -17,7 +17,7 @@ int main (void){
 
   Matrix result = A*B;
   cout << result;
-  cout << "Determinant of Result: " << result.calculateDeterminant() << "\n";
+  cout << "Determinant of Result: " << A.calculateDeterminant() << "\n";
   
   return 0;
 }
