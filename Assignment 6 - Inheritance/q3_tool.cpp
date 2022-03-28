@@ -20,7 +20,6 @@ void tool::setStrength(const int& s){
   this->strength = s;
 }
 
-
 class rock: public tool {
 public:
   rock(const int&);
@@ -37,7 +36,6 @@ bool rock::fight(tool& t){
     return this->strength*2 > t.getStrength();
   return false;
 }
-
 
 class paper: public tool {
 public:
@@ -56,7 +54,6 @@ bool paper::fight(tool& t){
   return false;
 }
 
-
 class scissors: public tool {
 public:
   scissors(const int&);
@@ -73,7 +70,6 @@ bool scissors::fight(tool& t){
     return this->strength*2 > t.getStrength();
   return false;
 }
-
 
 int main(void){
   scissors s1(5);
