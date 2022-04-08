@@ -1,7 +1,6 @@
 #include <iostream>
 #include <math.h>
 #include <iomanip>
-// #include <time.h>
 using namespace std;
 
 // Max Heap
@@ -201,7 +200,7 @@ int main (void){
   cout << "\nEnter maximum #size of heap: ";
   int n; cin >> n;
 
-  heap<int> h(n);
+  heap<char> h(n);
 
   bool wantToExit = false;
   cout << "\n 0. Exit";

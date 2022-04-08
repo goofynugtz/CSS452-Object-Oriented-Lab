@@ -9,7 +9,8 @@ public:
 public:
   salary(const double&);
   void updateGross();
-  double averageSalary(const salary&);
+  // double averageSalary(const salary&);
+  friend double averageSalary(const salary&, const salary&);
 
   template <typename T>
   salary& operator=(const T&);
@@ -26,8 +27,12 @@ void salary::updateGross(){
 }
 
 // WARN: NOT A FRIEND
-double salary::averageSalary(const salary& s){
+/* double salary::averageSalary(const salary& s){
   return (s.gross + this->gross)/2;
+} */
+
+double averageSalary(const salary& s1, const salary& s2){
+  return (s1.gross + s2.gross)/2;
 }
 
 template <typename T>
@@ -43,10 +48,11 @@ double salary::da = 28;
 int main(void){
 
   salary ceo = 150000;
-  cout << ceo.basic << "\n";
-  cout << ceo.bonus << "\n";
-  cout << ceo.da << "\n";
-  cout << ceo.gross << "\n";
-
+  salary cto = 100000;
+  cout << "CEO Basic: " << ceo.basic << "\n";
+  cout << "Bonus: " << ceo.bonus << "\n";
+  cout << "DA: " << ceo.da << "\n";
+  cout << "CEO Gross Income: " << ceo.gross << "\n";
+  cout << "Average salary of CEO && CTO: " << averageSalary(ceo, cto) << "\n";
   return 0;
 }

@@ -14,9 +14,9 @@ class Hash {
     Hash(const int & = 10);
     ~Hash();
     List<T> * getTable();
-    Hash &insertValue(const T &);
-    Hash &deleteValue(const T &);
-    void search(const T &);
+    Hash& insertValue(const T&);
+    Hash& deleteValue(const T&);
+    void search(const T&);
     void showTableDistribution();
     void display();
 };
@@ -24,9 +24,9 @@ class Hash {
 template <typename T>
 int Hash<T>::function(const int &x){
   // Below function would take the ones place as index of hash table.
-  return x % tableSize;
+  // return x % tableSize;
   // Below function would take the tens digit as index of hash table.
-  // return (x / tableSize) % tableSize ; 
+  return (x / tableSize) % tableSize ; 
 }
 
 template <typename T>
@@ -74,8 +74,10 @@ void Hash<T>::search(const T &x){
 template <typename T>
 void Hash<T>::display(){
   cout << "\n";
-  for (int i = 0; i < tableSize; i++)
-    cout << char(192) << char(196) << "[" << i << "] " << table[i] << char(179) << "\n";
+  for (int i = 0; i < tableSize; i++){
+    cout << char(192) << char(196) << "[" << i << "] ";
+    cout << table[i] << char(179) << "\n";
+  }
 }
 
 template <typename T>
@@ -94,6 +96,10 @@ int main(void){
   cout << "\n";
   h1.insertValue(10);
   h1.insertValue(22);
+  h1.insertValue(27);
+  h1.insertValue(25);
+  h1.insertValue(28);
+  h1.insertValue(18);
   h1.display();
   h1.search(10);
   h1.search(22);

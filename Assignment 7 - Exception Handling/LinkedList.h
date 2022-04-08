@@ -5,16 +5,14 @@ template <typename T>
 struct node {
   public:
     T data;
-    int payload;
     node * next;
-    node(T,T = 1, node * = NULL);
+    node(T, node * = NULL);
     ~node();
 };
 
 template <typename T>
-node<T>::node(T n, T w, node * next){
+node<T>::node(T n, node * next){
   this->data = n;
-  this->payload = w;
   this->next = next;
 };
 
@@ -36,7 +34,7 @@ class List {
     int getSize();
     List &insertNode(const T&);
     List &deleteNode(const int&);
-    List &insertBegining(const T&, const int& = 1);
+    List &insertBegining(const T&);
     List &concatenate(List<T>&);
     int search(const T&);
     friend ostream &operator<< (ostream &out, const List<T> &l){
@@ -44,9 +42,8 @@ class List {
       if (ptr == NULL)
         out << "Empty List\n";
       else {
-        // out << ">> ";
         while (ptr != NULL){
-          out << ptr->data << " (" << ptr->payload << ")" << " -> ";
+          out << ptr->data << " -> ";
           ptr = ptr->next;
         }
         out << "\n";
@@ -143,8 +140,8 @@ List<T> &List<T>::deleteNode(const int &i){
 }
 
 template <typename T>
-List<T> &List<T>::insertBegining(const T &n, const int &w){
-  node<T> * newNode = new node<T>(n, w, head);
+List<T> &List<T>::insertBegining(const T &n){
+  node<T> * newNode = new node<T>(n, head);
   head = newNode;
   size++;
   return (*this);

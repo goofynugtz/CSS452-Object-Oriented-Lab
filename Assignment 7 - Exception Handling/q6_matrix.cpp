@@ -2,17 +2,18 @@
 #include <iomanip>
 using namespace std;
 
+template <typename U>
 class row {
 public:
-  double * row_address;
+  U * row_address;
   int row_size;
-  row(double ** f = NULL){
+  row(U ** f = NULL){
     if(f != NULL)
       row_address = *f;
     else
       row_address = NULL;
   }
-  double& operator[](int index){
+  U& operator[](int index){
     return this->row_address[index];
   }
 };
@@ -38,7 +39,9 @@ public:
   matrix& adjoint();
   int determinant();
   matrix& T();
-  row& operator[](const int&);
+
+  // template <typename V>
+  row<U>& operator[](const int&);
   bool operator==(const matrix&);
   
   template <typename V>
@@ -47,43 +50,44 @@ public:
   friend ostream & operator<< (ostream&, matrix<V>&);
 };
 
-template <typename T>
-matrix<T>::matrix(const matrix& m){
+template <typename U>
+matrix<U>::matrix(const matrix<U>& m){
   this->rows = m.rows;
   this->columns = m.columns;
-  array = new T*[m.rows];
-  for (int i = 0; i < m.columns; i++)
-    array[i] = new T[m.columns];
+  this->array = new U*[this->rows];
+  for (int i = 0; i < this->columns; i++)
+    array[i] = new U[this->columns];
   for (int i = 0; i < m.rows; i++)
-    for (int j = 0; j < m.rows; j++)
-      this->array[i][j] = m.array[i][j];  
+    for (int j = 0; j < m.columns; j++)
+      this->array[i][j] = m.array[i][j];
 }
 
-template <typename T>
-matrix<T>::matrix(const int& order){
+template <typename U>
+matrix<U>::matrix(const int& order){
   rows = order;
   columns = order;
-  array = new T*[order];
+  array = new U*[order];
   for (int i = 0; i < order; i++)
-    array[i] = new T[order];
+    array[i] = new U[order];
 }
 
-template <typename T>
-matrix<T>::matrix(const int& row, const int& column){
+template <typename U>
+matrix<U>::matrix(const int& row, const int& column){
   this->rows = row;
   this->columns = column;
-  array = new T*[rows];
+  array = new U*[rows];
   for (int i = 0; i < rows; i++)
-    array[i] = new T[columns];
+    array[i] = new U[columns];
 }
 
-template <typename T>
-matrix<T>& matrix<T>::operator+(const matrix& m){
+template <typename U>
+matrix<U>& matrix<U>::operator+(const matrix& m){
+  if (this->rows != m.rows || this->columns != m.columns)
+    throw -1;
   static matrix a(*this);
-  if (this->rows == m.rows && this->columns == m.columns)
-    for (int i = 0; i < m.rows; i++)
-      for (int j = 0; j < m.columns; j++)
-        a.array[i][j] += m.array[i][j];
+  for (int i = 0; i < m.rows; i++)
+    for (int j = 0; j < m.columns; j++)
+      a.array[i][j] += m.array[i][j];
   return a;
 }
 
@@ -98,11 +102,12 @@ matrix<U>& matrix<U>::operator+(const U& n){
 
 template <typename T>
 matrix<T>& matrix<T>::operator-(const matrix& m){
+  if (this->rows != m.rows || this->columns != m.columns)
+    throw -1;
   static matrix a(m);
-  if (this->rows == m.rows && this->columns == m.columns)
-    for (int i = 0; i < m.rows; i++)
-      for (int j = 0; j < m.columns; j++)
-        a.array[i][j] -= m.array[i][j];
+  for (int i = 0; i < m.rows; i++)
+    for (int j = 0; j < m.columns; j++)
+      a.array[i][j] -= m.array[i][j];
   return a;
 }
 
@@ -117,19 +122,18 @@ matrix<U>& matrix<U>::operator-(const U& n){
 
 template <typename T>
 matrix<T>& matrix<T>::operator*(const matrix& m){
-  static matrix result(rows, m.columns);
-  if (columns == m.rows){
-    for (int i = 0; i < rows; i++)
-      for (int j = 0; j < m.columns; j++){
-        result.array[i][j] = 0;
-        for (int k = 0; k < columns; k++)
-          result.array[i][j] += array[i][k] * m.array[k][j];
-      }
-    return result;
-  } else {
+  if (columns != m.rows){
     cout << "Error: Multiplication is not defined.\n";
     cout << "c1 != r2.\n";
+    throw -1;
   }
+  static matrix result(rows, m.columns);
+  for (int i = 0; i < rows; i++)
+    for (int j = 0; j < m.columns; j++){
+      result.array[i][j] = 0;
+      for (int k = 0; k < columns; k++)
+        result.array[i][j] += array[i][k] * m.array[k][j];
+    }
   return result;
 }
 
@@ -145,18 +149,19 @@ matrix<U>& matrix<U>::operator*(const U& n){
 template <typename T>
 matrix<T>& matrix<T>::operator!(void){
   int d = this->determinant();
-  static matrix m(this->rows);
-  if (d != 0){
-    double a = 1/double(this->determinant());
-    m = this->adjoint() * a;
-  } else 
+  if (d == 0){
     cout << ">> Non-invertible matrix as |matrix| = 0.\n";
+    throw -1;
+  }
+  static matrix m(this->rows);
+  double a = 1/double(this->determinant());
+  m = this->adjoint() * a;
   return m;
 }
 
-template <typename T>
-row& matrix<T>::operator[](const int& index){
-  static row object;
+template <typename U>
+row<U>& matrix<U>::operator[](const int& index){
+  static row<U> object;
   if (index >= this->rows)
     return object;
   object = &(this->array[index]);
@@ -173,7 +178,6 @@ bool matrix<T>::operator==(const matrix& m){
       if (m.array[i][j] != this->array[i][j])
         return 0;
   return 1;
-  
 }
 
 template <typename T>
@@ -187,6 +191,8 @@ matrix<T>& matrix<T>::T(){
 
 template <typename T>
 int matrix<T>::determinant(){
+  if (this->rows != this->columns)
+    throw -1;
   int d = 0;
   int order = this->rows;
   if (order == 1)
@@ -241,19 +247,20 @@ matrix<T>& matrix<T>::getCofactor(const int& ofRowIndex, const int& ofColumnInde
 
 template <typename T>
 matrix<T>& matrix<T>::adjoint(){
+  if (this->rows != this->columns)
+    throw -1;
+  
   static matrix adjointMatrix(this->rows, this->columns);
-  if (this->rows == this->columns){
-    int order = this->rows;
-    if (order == 1) adjointMatrix[0][0] = 1;
-    else {
-      int sign = 1;
-      for (int i = 0; i < order; i++){
-        for (int j = 0; j < order; j++){
-          matrix cofactor = this->getCofactor(i, j);
-          // cout << "CofactorMatrix: \n" << cofactor << "\n";
-          sign = ((i + j) % 2 == 0) ? 1 : -1;
-          adjointMatrix.array[j][i] = (sign) * cofactor.determinant();
-        }
+  int order = this->rows;
+  if (order == 1) adjointMatrix.array[0][0] = 1;
+  else {
+    int sign = 1;
+    for (int i = 0; i < order; i++){
+      for (int j = 0; j < order; j++){
+        matrix cofactor = this->getCofactor(i, j);
+        // cout << "CofactorMatrix: \n" << cofactor << "\n";
+        sign = ((i + j) % 2 == 0) ? 1 : -1;
+        adjointMatrix.array[j][i] = (sign) * cofactor.determinant();
       }
     }
   }
@@ -283,3 +290,51 @@ ostream & operator<< (ostream &out, matrix<T> &m){
   out << "\n";
   return out;
 };
+
+int main(void){
+
+  matrix<double> s(3);
+  cin >> s; cout << s;
+  matrix<double> m(2,3);
+  cin >> m; cout << m;
+  matrix<double> n(3,2);
+  cin >> n; cout << n;
+
+  cout << "m': " << m.T() << "\n";
+  cout << "m: " << m << "\n";
+  cout << "m+4: " << m+4 << "\n";
+  try {
+    cout << "m+m: " << m+m << "\n";
+  } catch(int){
+    cout << "Error: Matrix not of same order.\n";
+  }
+  try {
+    cout << "m+n: " << m+n << "\n";
+  } catch(int){
+    cout << "Error: Matrix not of same order.\n";
+  }
+  cout << "s-1: " << s-1 << "\n";
+  cout << "m*3: " << m*3 << "\n";
+  try {
+    cout << "m*n: " << m*n << "\n";
+  } catch (int){
+    cout << "Error: Matrix not of same order.\n";
+  }
+  try {
+    cout << "|m|: " << m.determinant() << "\n";
+  } catch(int){
+    cout << "Error: Not a square matrix.\n";
+    cout << "Determinant not defined.\n";
+  }
+  try {
+    cout << "|s|: " << s.determinant() << "\n";
+  } catch(int){
+    cout << "Error: Not a square matrix.\n";
+  }
+  try {
+    cout << "adj(s): \n" << s.adjoint() << "\n";
+  } catch (int){
+    cout << "Error: Not a square matrix.\n";
+  }
+  return 0;
+}

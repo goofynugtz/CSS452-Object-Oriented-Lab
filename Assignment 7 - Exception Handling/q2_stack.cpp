@@ -62,7 +62,6 @@ stack<T> &stack<T>::pushMultiple(){
   return (*this);
 }
 
-
 template <typename T>
 istream& operator>> (istream& in, stack<T>& s){
   cout << "Enter #value to be inserted: ";
@@ -116,30 +115,10 @@ stack<T>::~stack(){
   delete[] data;
 }
 
-/* int main(void){
-
-  stack<char> s(100);
-
-  s.push('A');
-  s.push('C');
-  s.push('B');
-  s.push('*');
-  s.push('/');
-
-  // s.display();
-  cout << s;
-
-  return 0;
-} */
-
-
-
 int main(void){
-
   cout << "\nEnter the size of stack: ";
   int size; cin >> size;
   stack<char> s(size);
-
   cout << "\n";
   cout << "1: Push\n";
   cout << "2: Push multiple random values\n";
@@ -149,15 +128,11 @@ int main(void){
   cout << "6: Is Full?\n";
   cout << "7: Display Stack\n";
   cout << "0: Exit Program\n";
-
   bool wantToExit = 0;
-
   while (!wantToExit){
     cout << "\nChoose Option: ";
     int n; cin >> n;
-
     int i, value, d;
-
     switch (n){
       
       case 1:
@@ -201,6 +176,5 @@ int main(void){
         break;
     }
   }
-
   return 0;
 }
